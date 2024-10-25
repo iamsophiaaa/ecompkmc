@@ -80,3 +80,11 @@ def logout_user(request):
 def register_user(request):
    
     return render(request, 'register_user.html', {})
+
+
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        return render(request,"search.html", {'searched':searched} )
+    else:
+        return render(request, "search.html", {})
