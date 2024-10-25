@@ -2613,6 +2613,12 @@ textarea.form-control-lg {
 .is-valid ~ .valid-tooltip {
   display: block;
 }
+#product-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin:10px auto;
+}
 
 .was-validated .form-control:valid, .form-control.is-valid {
   border-color: #198754;

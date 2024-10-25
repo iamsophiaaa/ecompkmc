@@ -43,6 +43,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to='uploads/product')
     description =models.CharField(max_length=200, default='', blank=True, null=True)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE , default=1) 
+    condition = models.CharField(max_length=20, choices=CONDITION_CHOICES, default='new')
+    
     def __str__(self):
         return self.name
     
