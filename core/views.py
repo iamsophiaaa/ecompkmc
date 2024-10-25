@@ -1,9 +1,20 @@
 from django.shortcuts import render, redirect
-from .models import Product
+from .models import Product,Category
 from django.contrib.auth import authenticate , login, logout
 from django.contrib import messages
 
 # Create your views here.
+def category(request,co):
+    co=co.replace('-' ,'')
+    category = Category.objects.get(name=co)
+    products=Product.objects.filter(category=category)
+    return render(request, 'category.html', {'products':products,'category':category})
+
+def product(request,pk):
+    product = Product.objects.get(id=pk)
+    return render(request, 'product.html', {'product':product,})
+
+    
 def home(request):
     products = Product.objects.all()
     return render(request, 'home.html', {'products':products})
