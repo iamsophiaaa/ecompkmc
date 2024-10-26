@@ -6,25 +6,32 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import SignUpForm
+import os
+from django.conf import settings
 # Create your views here.
 def category(request,co):
     co=co.replace('-' ,'')
     category = Category.objects.get(name=co)
     products=Product.objects.filter(category=category)
-    return render(request, 'category.html', {'products':products,'category':category})
+    return render(request, 'core/category.html', {'products':products,'category':category})
 
 def product(request,pk):
     product = Product.objects.get(id=pk)
-    return render(request, 'product.html', {'product':product,})
+    return render(request, 'core/product.html', {'product':product,})
 
     
 def home(request):
     products = Product.objects.all()
-    return render(request, 'home.html', {'products':products})
+
+    return render(request, 'core/home.html', {'products':products})
+
+def second(request):
+    products = Product.objects.filter(condition='second_hand')
+    return render(request, 'core/home.html', {'products':products})
 
 
 def about(request):
-    return render(request, 'about.html', {})
+    return render(request, 'core/about.html', {})
 
         
 
@@ -87,4 +94,4 @@ def search(request):
         searched = request.POST['searched']
         return render(request,"search.html", {'searched':searched} )
     else:
-        return render(request, "search.html", {})
+        return render(request, "core/search.html", {})
