@@ -1,6 +1,7 @@
 import datetime
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import PermissionsMixin,BaseUserManager, AbstractBaseUser
 
 # Create your models here.
 
@@ -20,13 +21,20 @@ class Customer(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
     
+# class CustomUserManager(BaseUserManager):
+#     def get_by_natural_key(self, username):
+#         return self.get(username=username)
 class Seller(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    username= models.CharField(max_length=50, unique="true")
     first_name = models.CharField(max_length=50)
     last_name  = models.CharField(max_length=50)
     phone = models.CharField(max_length=10)
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=50)
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email'] 
+    # objects = CustomUserManager()
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
