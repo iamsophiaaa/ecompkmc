@@ -16,13 +16,58 @@
               <h5 class="card-title">{{product.name}}</h5>
               <p class="card-text">{{product.description}}</p>
               <p class="price">{{product.price}}</p>
-             
+            
+              <style>
+                .add-to-cart {
+                    background-color: #4CAF50; /* Green background */
+                    color: white; /* White text */
+                    border: none; /* Remove borders */
+                    padding: 5px 5px; /* Add some padding */
+                    text-align: center; /* Center the text */
+                    text-decoration: none; /* Remove underline */
+                    display: inline-block; /* Align properly */
+                    font-size: 16px; /* Set font size */
+                    margin: 4px 2px; /* Add some margin */
+                    cursor: pointer; /* Pointer cursor on hover */
+                    border-radius: 5px; /* Rounded corners */
+                }
+                
+                .add-to-cart:hover {
+                    background-color: #45a049; /* Darker green on hover */
+                }
+                </style>
+                
          <p class="card-text"><small class="text-body-secondary">{{product.condition}}</small></p>
          <a href="{%url 'home'%}"class="btn btn-secondary">Home</a>
+         <button class="add-to-cart" data-product-id="{{ product.id }}">Add to Cart</button>
             </center>
             </div>
           </div>
         </div>
       </div>
       </div>
+       <script>
+        $(document).on('click', '.add-to-cart', function(e) {
+    e.preventDefault();
+    var product_id = $(this).data('product-id');
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "add_to_cart" %}',  // Ensure this matches your URL configuration
+        data: {
+            productId: product_id,
+            csrfmiddlewaretoken: '{{ csrf_token }}',  // CSRF token for security
+        },
+        success: function(response) {
+            // Update the cart quantity display
+            document.getElementById("cart_quantity").textContent = response.cart_quantity;
+        },
+        error: function(xhr, errmsg, err) {
+            console.log("Error:", xhr.status, errmsg);
+        }
+    });
+});
+       </script>
+       
+    
 {% endblock %}

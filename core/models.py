@@ -45,6 +45,8 @@ class Product(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE , default=1) 
     condition = models.CharField(max_length=20, choices=CONDITION_CHOICES, default='new')
     
+
+    
     def __str__(self):
         return self.name
     
@@ -59,4 +61,5 @@ class Order(models.Model):
 
     def __str__(self):
        return f'Order for {self.product.name} by {self.customer.first_name}'
+
     
