@@ -3,9 +3,9 @@ from .cart import Cart
 from core.models import Product
 from django.http import JsonResponse
 def cart_summary(request):
- return render (request,"cart_summary.html",{})
-
-
+    cart = Cart(request)  # Instantiate Cart with the request
+    cart_products = cart.get_products()  # Call the method to get products
+    return render(request, "cart_summary.html", {"cart_products": cart_products})
 
 
 def add_to_cart(request):

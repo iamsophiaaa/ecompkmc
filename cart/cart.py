@@ -1,8 +1,9 @@
+from core.models import Product
 class Cart():
     def __init__(self,request):
 
         self.session=request.session
-        cart=self.session.get('cart')
+        self.cart = self.session.get('cart', {})
         if 'cart' not in request.session:
             cart=self.session['session_key']={}
             self.cart=cart
@@ -16,5 +17,9 @@ class Cart():
             self.session.modified=True
     def __len__(self):
         return len(self.cart)
-                     
+    
+    def get_products(self):
+        product_id=self.cart.keys()
+        products=Product.objects.filter(id__in=product_id)
+        return products           
     
