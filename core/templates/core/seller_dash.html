@@ -1,0 +1,91 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>{{user.username}}'s dashboard</h1>
+
+
+<button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" ><div class="menu_icon"></div><div class="menu_icon"></div><div class="menu_icon"></div></button>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="sidebar">
+        <ul class="menu flex-column">
+          <li class="menu-item">
+            <a class="menu-link" href="#">Profile</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="#">Products</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="#">Orders</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="#">Customers</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="#">Settings</a>
+          </li>
+        </ul>
+      </div>
+  </div>
+</div>
+
+ 
+
+
+
+    <section>
+        <h2 style="text-align:center;">Your Products</h2>
+        <ul>
+          <div class="container px-4 px-lg-5 mt-5">
+          <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+              {% for product in products %}
+              <div class="col mb-5">
+                  <div class="card h-100">
+                      <!-- Product image-->
+                      <img  id="product-image" class="card-img-top" src="{{product.image.url}}" alt="..." />
+                      <!-- Product details-->
+                      <div class="card-body p-4">
+                          <div class="text-center">
+                              <!-- Product name-->
+                              <h5 class="fw-bolder">{{product.name}}</h5>
+                              <!-- Product price-->
+                              Rs.{{product.price}}
+                              <br />
+                              
+
+                          </div>
+                      </div>
+                      <!-- Product actions-->
+                      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                          <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %} ">View Product</a></div>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+             
+   
+          </div>
+      </div>
+        </ul>
+    </section>
+
+    <section>
+        <h2 style="text-align:center;">Your Orders</h2>
+        <ul>
+            {% for order in orders %}
+                <li>Order for {{ order.product.name }} - Status: {{ order.status }} - Total: ${{ order.total_price }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+
+
+
+
+  
+{% endblock %}
