@@ -1,16 +1,55 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-2 px-lg-2 my-1">
-                <div class="text-center text-white">
-                    <h1 class="display-5 fw-bolder">Shopping Cart</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">View Your Cart</p>
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-2 px-lg-2 my-1">
+        <div class="text-center text-white">
+            <h1 class="display-5 fw-bolder">Shopping Cart</h1>
+            <p class="lead fw-normal text-white-50 mb-0">View Your Cart</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    {% if cart_products %}
+        {% for item in cart_products %}
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <center>
+                        <img src="{{ item.product.image.url }}" class="img-fluid rounded-start" alt="...">
+                        </center>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.product.name }}</h5>
+                            <p class="card-text">{{ item.product.description }}</p>
+                            <p class="price">{{ item.product.price }}</p>
+                            <p class="quantity">Quantity: {{ item.quantity }}</p>
+                            <p class="card-text"><small class="text-body-secondary">{{ item.product.condition }}</small></p>
+                            <!-- <center><a href="{% url 'home' %}" class="btn btn-secondary">Home</a></center> -->
+                              
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control" style="width: 100px;">
+                                    <button type="submit" class="btn btn-primary mt-2">Update Quantity</button>
+                                    <button type="submit" name="delete" class="btn btn-danger mt-2">Delete</button>
+                                </form>
+                           
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
-        </header>
-        
-     
-    {% endblock %}
+        {% endfor %}
+        <p><strong>Total Quantity:</strong> {{ total_quantity }}</p>
+        <p><strong>Total Price:</strong> {{ total_price|floatformat:2 }}</p>
+    {% else %}
+        <p>There is nothing in your cart.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

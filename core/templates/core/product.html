@@ -36,6 +36,24 @@
                     background-color: #45a049; /* Darker green on hover */
                 }
                 </style>
+                <br>
+               <!-- <div class="row justify-content-center">
+                  <div class="col-md-2">Quantity:</div>
+                  <div class="col-md-2">
+               
+                <select class="form-select form-select-sm" id="qty-cart">
+            
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+            
+                </div>
+                </div>  -->
+                <label for="quantity_{{ product.id }}">Quantity:</label>
+    <input type="number" id="quantity_{{ product.id }}" value="1" min="1">
+                
+                <br/>
                 
          <p class="card-text"><small class="text-body-secondary">{{product.condition}}</small></p>
          <a href="{%url 'home'%}"class="btn btn-secondary">Home</a>
@@ -46,28 +64,37 @@
         </div>
       </div>
       </div>
-       <script>
-        $(document).on('click', '.add-to-cart', function(e) {
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).on('click', '.add-to-cart', function(e) {
     e.preventDefault();
+
+    // Get the product ID and the selected quantity
     var product_id = $(this).data('product-id');
+    var quantity = $('#quantity_' + product_id).val();  // Get quantity from input field
 
     $.ajax({
         type: 'POST',
-        url: '{% url "add_to_cart" %}',  // Ensure this matches your URL configuration
+        url: '{% url "add_to_cart" %}',  // Make sure this URL matches your Django URL configuration
         data: {
             productId: product_id,
-            csrfmiddlewaretoken: '{{ csrf_token }}',  // CSRF token for security
+            quantity: quantity,  // Send quantity along with product ID
+            csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function(response) {
-            // Update the cart quantity display
+            // Update the total cart quantity displayed
             document.getElementById("cart_quantity").textContent = response.cart_quantity;
+
+            // Update the individual product quantity in the cart
+            $('#product_qty_' + product_id).text(response.product_qty);
         },
         error: function(xhr, errmsg, err) {
             console.log("Error:", xhr.status, errmsg);
         }
     });
 });
-       </script>
-       
+</script>
+
     
 {% endblock %}

@@ -1,41 +1,85 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from .cart import Cart
 from core.models import Product
 from django.http import JsonResponse
 def cart_summary(request):
- return render (request,"cart_summary.html",{})
+    cart_products = []
+    cart = request.session.get('cart', {})
 
+    # Handle the form submission for updating the quantity
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        new_quantity = int(request.POST.get('quantity'))
 
+        # Update the quantity if the product is in the cart
+        if product_id in cart:
+            cart[product_id]['qty'] = new_quantity
+            request.session['cart'] = cart  # Save the updated cart back to the session
 
+    # Handle the deletion of a product from the cart
+    if request.method == 'POST' and 'delete' in request.POST:
+        product_id = request.POST.get('product_id')
+
+        # Remove the product from the cart if it exists
+        if product_id in cart:
+            del cart[product_id]
+            request.session['cart'] = cart  # Save the updated cart back to the session
+
+        return redirect('cart_summary')  # Redirect to the same page to refresh the cart
+
+    # Populate the cart_products list with product details and quantities
+    for product_id, item in cart.items():
+        try:
+            product = Product.objects.get(id=product_id)
+            cart_products.append({
+                'product': product,
+                'quantity': item['qty']
+            })
+        except Product.DoesNotExist:
+            continue
+
+    total_quantity = sum(item['quantity'] for item in cart_products)
+    total_price = sum(float(item['product'].price) * item['quantity'] for item in cart_products)
+
+    context = {
+        'cart_products': cart_products,
+        'total_quantity': total_quantity,
+        'total_price': total_price
+    }
+
+    return render(request, 'cart_summary.html', context)
 
 def add_to_cart(request):
     if request.method == 'POST':
+        # Retrieve product_id and quantity from the AJAX request
         product_id = request.POST.get('productId')
+        quantity = int(request.POST.get('quantity', 1))  # Default to 1 if quantity is not provided
 
-        # Initialize cart in session if it doesn't exist
+        # Retrieve the product or return 404 if it doesn't exist
+        product = get_object_or_404(Product, id=product_id)
+
+        # Initialize the cart in the session if it doesn't exist
         if 'cart' not in request.session:
             request.session['cart'] = {}
 
         cart = request.session['cart']
 
-        # If the product is already in the cart, increment its quantity
+        # Add or update the product quantity in the cart
         if product_id in cart:
-            cart[product_id]['qty'] += 1
+            cart[product_id]['qty'] += quantity
         else:
-            # Add the product to the cart with an initial quantity of 1
-            product = Product.objects.get(id=product_id)
             cart[product_id] = {
                 'name': product.name,
-                'price': str(product.price),  # Store price as string to avoid serialization issues
-                'qty': 1
+                'price': str(product.price),
+                'qty': quantity
             }
 
-        # Save back to the session
+        # Save back to the session and mark it as modified
         request.session['cart'] = cart
         request.session.modified = True
 
-        # Calculate total quantity
+        # Calculate the total quantity in the cart
         total_quantity = sum(item['qty'] for item in cart.values())
-        return JsonResponse({'cart_quantity': total_quantity})
+        return JsonResponse({'cart_quantity': total_quantity, 'product_qty': cart[product_id]['qty']})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)

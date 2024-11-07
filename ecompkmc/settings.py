@@ -59,7 +59,7 @@ ROOT_URLCONF = 'ecompkmc.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"], 
+        'DIRS': [BASE_DIR / 'core/templates'], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,17 +81,19 @@ WSGI_APPLICATION = 'ecompkmc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
-   "default": {
-        "ENGINE": "django.db.backends.mysql",
-        'NAME': 'ecom',          # Your database name
-        'USER': 'root',               # Your MySQL username
-        'PASSWORD': '',           # Your MySQL password
-        'HOST': 'localhost',                   # Use 'localhost' or your MySQL server's IP
-        'PORT': '3306', 
-        'OPTIONS': {
-            'ssl': {'ssl_disabled': True},  # Disable SSL (added correctly)
-        },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+#    "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         'NAME': 'ecom',          # Your database name
+#         'USER': 'root',               # Your MySQL username
+#         'PASSWORD': '',           # Your MySQL password
+#         'HOST': 'localhost',                   # Use 'localhost' or your MySQL server's IP
+#         'PORT': '3306', 
+        
+#    }
 
         
     
