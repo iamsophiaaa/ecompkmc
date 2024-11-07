@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import RegistrationForm ,LoginForm # Assume you've created a LoginForm for login
+from .models import CustomerProfile, SellerProfile
 
 def login_view(request):
     if request.method == 'POST':
@@ -24,9 +25,14 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()  # Save the user with the role 'customer'
+            user = form.save()  # Save the user first
+            if user.user_type == 'customer':
+                CustomerProfile.objects.create(user=user)
+            elif user.user_type == 'seller':
+                SellerProfile.objects.create(user=user)
+
             login(request, user)  # Log the user in after registration
-            return redirect('home')  # Redirect to home or customer dashboard
+            return redirect('login')  # Redirect to home or customer dashboard
     else:
         form = RegistrationForm()
     return render(request, 'account/register_user.html', {'form': form})

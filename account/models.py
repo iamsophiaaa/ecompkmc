@@ -4,11 +4,11 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    ROLE_CHOICES = (
+    USER_TYPE_CHOICES = (
         ('customer', 'Customer'),
         ('seller', 'Seller'),
     )
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     username= models.CharField(max_length=50,  unique=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -18,6 +18,7 @@ class User(AbstractUser):
         ('bca', 'BCA'),
         ('bit', 'BIT'),
     )
+    department =models.CharField(max_length=50 ,default='bca', choices= DEPARTMENT_CHOICES)
 
 class CustomerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -4,14 +4,26 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User, SellerProfile, CustomerProfile
 
 
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+
+
 class RegistrationForm(UserCreationForm):
+
+    password = forms.CharField(widget=forms.PasswordInput)
+    user_type = forms.ChoiceField(choices=User.USER_TYPE_CHOICES, required=True)
+
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'password1', 'password2', 'role', 'address', 'contact_number']
+        fields = ['username','first_name', 'last_name', 'password1', 'password2', 'user_type', 'address', 'contact_number']
     
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.role = 'customer'
+        user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()
         return user
