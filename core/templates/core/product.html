@@ -84,6 +84,7 @@ $(document).on('click', '.add-to-cart', function(e) {
         },
         success: function(response) {
             // Update the total cart quantity displayed
+            location.reload()
             document.getElementById("cart_quantity").textContent = response.cart_quantity;
 
             // Update the individual product quantity in the cart
