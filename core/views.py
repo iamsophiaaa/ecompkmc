@@ -143,3 +143,12 @@ def seller_dashboard(request):
     
     
     return render(request, 'core/seller_dash.html', {'products': products})
+
+
+def product_list(request):
+    user = request.user
+    seller_profile = SellerProfile.objects.get(user=user)
+    products = Product.objects.filter(seller=seller_profile)
+    
+
+    return render(request, 'core/product_list.html', {'products': products})

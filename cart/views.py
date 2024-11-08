@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from .cart import Cart
 from core.models import Product
 from django.http import JsonResponse
+from django.contrib import messages
 def cart_summary(request):
     cart_products = []
     cart = request.session.get('cart', {})
@@ -15,6 +16,7 @@ def cart_summary(request):
         if product_id in cart:
             cart[product_id]['qty'] = new_quantity
             request.session['cart'] = cart  # Save the updated cart back to the session
+            messages.success(request,("Product updated..."))
 
     # Handle the deletion of a product from the cart
     if request.method == 'POST' and 'delete' in request.POST:
@@ -24,7 +26,7 @@ def cart_summary(request):
         if product_id in cart:
             del cart[product_id]
             request.session['cart'] = cart  # Save the updated cart back to the session
-
+       
         return redirect('cart_summary')  # Redirect to the same page to refresh the cart
 
     # Populate the cart_products list with product details and quantities
@@ -80,6 +82,8 @@ def add_to_cart(request):
 
         # Calculate the total quantity in the cart
         total_quantity = sum(item['qty'] for item in cart.values())
+        messages.success(request,("Product added to cart"))
         return JsonResponse({'cart_quantity': total_quantity, 'product_qty': cart[product_id]['qty']})
+        
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
