@@ -4,8 +4,9 @@ from django.contrib.auth import authenticate , login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django import forms
-from .forms import SignUpForm
+from account.models  import SellerProfile
+# from django import forms
+# from .forms import SignUpForm
 import os
 from django.conf import settings
 # Create your views here.
@@ -63,7 +64,11 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, ("You've been logged in successfully"))
-            return redirect('home')
+            if user=='customer':
+                return redirect('customer_dashboard')
+            
+            elif user=='seller':
+                return redirect('seller_dashboard')
         else:
             messages.success(request, ("There was an error"))
             return redirect('login')
@@ -95,3 +100,26 @@ def search(request):
         return render(request,"search.html", {'searched':searched} )
     else:
         return render(request, "core/search.html", {})
+
+
+def customer_dashboard(request):
+   
+    return render(request, 'core/customer_dash.html', {})
+
+def seller_dashboard(request):
+    user = request.user
+    
+    # Get the SellerProfile related to the logged-in user
+    try:
+        seller_profile = SellerProfile.objects.get(user=user)
+    except SellerProfile.DoesNotExist:
+        seller_profile = None  # Or handle this case if the user is not a seller
+
+    # If the seller profile exists, filter the products by the seller's profile
+    if seller_profile:
+        products = Product.objects.filter(seller=seller_profile)
+    else:
+        products = Product.objects.none()
+    
+    
+    return render(request, 'core/seller_dash.html', {'products': products})
