@@ -5,7 +5,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link " aria-current="page" href="{% url 'home'%}">Home</a></li>
-                <li class="nav-item"><a class="nav-link " aria-current="page" href="{% url 'search'%}">Search</a></li>
+                <!-- <li class="nav-item"><a class="nav-link " aria-current="page" href="{% url 'product:product_search'%}">Search</a></li> -->
                 <li class="nav-item"><a class="nav-link " aria-current="page" href="{% url 'second'%}">Second Hand</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
 
@@ -25,7 +25,15 @@
                         <li><a class="dropdown-item" href="{% url 'category' 'Copy' %}">Copy</a></li>
                     </ul>
                 </li> -->
+                
             </ul>
+            <div class="search-container" style=" text-align: center; margin: 0 20px; ">
+                        
+                <form action="{% url 'product:product_search' %}"  method="GET">
+                    <input type="text" name="query" placeholder="Enter search term" required>
+                    <button type="submit" >Search</button>
+                </form>
+            </div>
             <form class="d-flex">
                 <a href="{% url 'cart_summary'%}" class="btn btn-outline-dark" type="submit">
                     <i class="bi-cart-fill me-1"></i>
@@ -33,6 +41,8 @@
                     <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity"> {{ cart_quantity }}</span>
                 </a>
             </form>
+
+            
         </div>
     </div>
 </nav>

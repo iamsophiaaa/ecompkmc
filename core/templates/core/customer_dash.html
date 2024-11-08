@@ -1,6 +1,75 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h1>{{username}}'s dashboard</h1>
+
+    <!-- Header-->
+    <header class="bg-dark py-5">
+        <div class="container px-2 px-lg-2 my-1">
+            <div class="text-center text-white">
+                <h1 class="display-5 fw-bolder">Welcome to our Homepage</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Shop with Us</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Recommendations Section (Horizontal Scroll) -->
+    <section style="text-align: center; margin: 10px auto;">
+        
+
+        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" style="max-width: 100%;background-color:rgb(229, 228, 228);padding: 10px; margin: 0 auto; ">
+            <h2 style="text-align:center;">Recommendations</h2>
+            <div class="carousel-inner" style=" display: flex; justify-content: center; align-items: center;background-color:rgb(229, 228, 228); ">
+                {% for product in products_from_same_department %}
+                <div class="carousel-item active" data-bs-interval="5000" style="align-items: center;background-color:rgb(229, 228, 228);" >
+                    <img src="{{ product.image.url }}" class="d-block w-100" alt="..." style="background-color:rgb(229, 228, 228);max-height: 380px; width: auto; object-fit: cover;">
+                </div>
+                {% endfor %}
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="fill: black;"></span>
+                <span class="visually-hidden" style="color:black;">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="fill: black;"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            
+          </div>
+    </section>
+    
+    
+
+    <!-- All Products Section -->
+    <section class="py-5">
+        <h2 style="text-align:center;">All Products</h2>
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for product in products %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ product.name }}</h5>
+                                <!-- Product price-->
+                                Rs.{{ product.price }}
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Product</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 
 {% endblock %}

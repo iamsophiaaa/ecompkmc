@@ -10867,3 +10867,56 @@ textarea.form-control-lg {
   background-color: black;
   margin: 6px 0;
 }
+
+/* Custom styling for horizontal scroll container */
+.d-flex {
+  max-width: 100%; /* Ensure the container takes the full width of the screen */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  scroll-snap-type: x mandatory; /* Ensure smooth snap scrolling */
+  gap: 15px; /* Space between the products */
+}
+
+/* Custom styling for product cards */
+.product-card {
+  flex-shrink: 0;
+  width: 250px; /* Fixed width for each product card */
+  scroll-snap-align: start; /* Snap each product card to the start */
+}
+
+/* Ensure image scales properly */
+.product-card img {
+  width: 100%; /* Ensure images fit the card */
+  height: 200px; /* Limit the height of the image */
+  object-fit: cover; /* Maintain aspect ratio */
+}
+
+.card-body {
+  padding: 10px; /* Reduce padding for compact card */
+}
+
+/* Smaller button */
+.btn-sm {
+  font-size: 0.8rem;
+}
+
+/* For small screens */
+
+/* For larger screens */
+
+/* Example: Set both max-width and max-height */
+.carousel-inner img {
+  max-width: 300px;
+  max-height: 50px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+/* For the previous button icon */
+.carousel-control-prev-icon {
+  fill: black;
+}
+
+/* For the next button icon */
+.carousel-control-next-icon {
+  fill: black;
+}
