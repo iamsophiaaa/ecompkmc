@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-
+{% include 'core/navbar.html' %}
 {% block content %}
 
     <!-- Header-->
@@ -62,7 +62,7 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
-                                <a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Product</a>
+                                <a class="btn btn-outline-dark mt-auto" href="{% url 'core:product' product.id %}">View Product</a>
                             </div>
                         </div>
                     </div>

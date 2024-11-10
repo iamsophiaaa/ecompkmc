@@ -1,9 +1,10 @@
 # accounts/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
-from .forms import RegistrationForm ,LoginForm # Assume you've created a LoginForm for login
-from .models import CustomerProfile, SellerProfile
+from .forms import RegistrationForm ,LoginForm , UserProfileForm# Assume you've created a LoginForm for login
+from .models import CustomerProfile, SellerProfile, User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def login_view(request):
     if request.method == 'POST':
@@ -18,10 +19,10 @@ def login_view(request):
                 messages.success(request, "You are now logged in.")
                 if user.user_type=='customer' or user.user_type=='both':
 
-                    return redirect('customer_dashboard')  # Redirect to homepage or dashboard
+                    return redirect('core:customer_dashboard')  # Redirect to homepage or dashboard
                 elif user.user_type=='seller':
 
-                    return redirect('seller_dashboard') 
+                    return redirect('core:seller_dashboard') 
             else:
                 form.add_error(None, "Invalid username or password")
     else:
@@ -85,3 +86,23 @@ def register(request):
         form = RegistrationForm()
 
     return render(request, 'account/register_user.html', {'form': form})
+
+@login_required
+def profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+     # Get the currently logged-in user
+    return render(request, 'account/profile.html', {'user': user})
+
+@login_required
+def edit_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('account:profile', user_id=user.id)  # Redirect to the profile page after saving
+    else:
+        form = UserProfileForm(instance=user)
+
+    return render(request, 'account/edit_profile.html', {'form': form, 'user': user})
