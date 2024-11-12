@@ -56,27 +56,6 @@ def about(request):
 #         return render(request, 'register_user.html', {'form':form})
 
 
-def login_user(request):
-    if request.method=="POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request , username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, ("You've been logged in successfully"))
-            if user=='customer':
-                return redirect('core:customer_dashboard')
-            
-            elif user=='seller':
-                return redirect('core:seller_dashboard')
-        else:
-            messages.success(request, ("There was an error"))
-            return redirect('account:login')
-    
-    else:
-        return render(request, 'account/login.html', {})
-        
-        
 
 
 

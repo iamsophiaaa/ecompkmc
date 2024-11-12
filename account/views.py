@@ -17,10 +17,10 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "You are now logged in.")
-                if user.user_type=='customer' or user.user_type=='both':
+                if user.user_type=='customer' :
 
                     return redirect('core:customer_dashboard')  # Redirect to homepage or dashboard
-                elif user.user_type=='seller':
+                elif user.user_type=='seller'or user.user_type=='both':
 
                     return redirect('core:seller_dashboard') 
             else:
@@ -72,12 +72,12 @@ def register(request):
                 
                 # Redirect to login or another appropriate page
                 messages.success(request, "Registration successful! You are now logged in.")
-                return redirect('login')  # or another URL if necessary
+                return redirect('account:login')  # or another URL if necessary
                 
             except Exception as e:
                 print(f"Error occurred: {str(e)}")
                 messages.error(request, f"An error occurred: {str(e)}")
-                return redirect('register')
+                return redirect('account:register')
         else:
             print("Form is invalid")  # Debugging print statement
             messages.error(request, "Please correct the errors below.")
@@ -106,3 +106,22 @@ def edit_profile(request, user_id):
         form = UserProfileForm(instance=user)
 
     return render(request, 'account/edit_profile.html', {'form': form, 'user': user})
+
+@login_required
+def switch_role(request):
+    user = request.user
+
+    # Check if the user has both roles
+    if user.user_type == 'both':
+        # Switch between roles based on the current active role
+        if user.active_role == 'customer':
+            user.active_role = 'seller'
+        else:
+            user.active_role = 'customer'
+        user.save()
+
+    # Redirect the user based on their active role
+    if user.active_role == 'customer':
+        return redirect('core:customer_dashboard')
+    else:
+        return redirect('core:seller_dashboard')

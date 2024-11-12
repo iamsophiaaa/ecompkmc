@@ -1,12 +1,11 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
+<div>
+  <h3 style="  font-size: 24px;margin: 0;font-weight: 600;">Welcome, {{user.username}}</h3>
+</div>
 
 
-<h1>{{user.username}}'s dashboard</h1>
-
-
-<button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" ><div class="menu_icon"></div><div class="menu_icon"></div><div class="menu_icon"></div></button>
 
 <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
   <div class="offcanvas-header">
@@ -29,7 +28,10 @@
             <a class="menu-link" href="#">Customers</a>
           </li>
           <li class="menu-item">
-            <a class="menu-link" href="#">Settings</a>
+            <a class="menu-link" href="{% url 'account:switch_role'%}">Switch Role</a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="{% url 'core:logout' %}">Logout</a>
           </li>
         </ul>
       </div>

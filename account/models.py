@@ -8,7 +8,7 @@ class User(AbstractUser):
         ('seller', 'Seller'),
         ('both', 'Both')
     )
-    
+    active_role = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='seller')  # Field to store the active role
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='customer')
     username = models.CharField(max_length=50, blank=False, null=False, unique=True)
     address = models.CharField(max_length=100, blank=True, null=True)
@@ -20,7 +20,19 @@ class User(AbstractUser):
         
         ('bit', 'BIT'),
     )
-    department = models.CharField(max_length=10, choices=DEPARTMENT_CHOICES,   null=False, default="bca")  # Set a default value)
+    department = models.CharField(max_length=10, choices=DEPARTMENT_CHOICES,   null=False, default="bca")  
+
+
+    def switch_role(self):
+        
+        if self.user_type == 'both':
+            if self.active_role == 'seller':
+                self.active_role = 'customer'
+            else:
+                self.active_role = 'seller'
+            self.save()
+        else:
+            raise ValueError("User must have 'both' roles to switch between them.")
 
 class CustomerProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

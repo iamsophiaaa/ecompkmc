@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
         <!-- Navbar Brand -->
-        <a class="navbar-brand" href="#">College Ecommerce</a>
+        <a class="navbar-brand" href="{% url 'core:seller_dashboard'%}">College Ecommerce</a>
 
         <!-- Toggler for mobile view -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,12 +11,9 @@
         <!-- Collapsing navbar content -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Navbar items go here -->
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="core:seller_dash">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="core:home">Logout</a>
+            <ul class="navbar-nav ms-auto mb-2 ">
+               
+                <li><button class="btn btn-secondary" style="margin: 0 5px;"type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" ><div class="menu_icon"></div><div class="menu_icon"></div><div class="menu_icon"></div></button>
                 </li>
                 
                 

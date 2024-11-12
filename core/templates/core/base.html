@@ -17,8 +17,21 @@
     </head>
     <body>
         <!-- Navigation-->
+        {% if user.is_authenticated %}
+            {% if user.user_type == 'seller' %}
+                {% include 'core/nav_seller.html' %}
+            {% elif user.user_type == 'both' and user.active_role == 'seller' %}
+                {% include 'core/nav_seller.html' %}
+            {% else %}
+                {% include 'core/navbar.html' %}
+            {% endif %}
 
-        {% include 'core/navbar.html' %}
+        {%else%}
+            {% include 'core/navbar.html' %}
+
+        {% endif %}
+
+
         {% if messages %}
             {% for message in messages %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">

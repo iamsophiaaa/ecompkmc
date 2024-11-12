@@ -1,5 +1,6 @@
+<!-- templates/account/profile.html -->
 {% extends 'core/base.html' %}
-{% include 'core/nav_seller.html' %}
+
 {% block content %}
 <div class="container mt-5">
     <h1 class="mb-4">Your Profile</h1>
@@ -71,6 +72,10 @@
                     <p>{{ user.department }}</p>
                 </div>
             </div>
+
+            {% if user.user_type == 'both' %}
+                <a href="{% url 'account:switch_role' %}" class="btn btn-primary">Switch Role</a>
+            {% endif %}
 
             <!-- Add any other fields you want to display here -->
 

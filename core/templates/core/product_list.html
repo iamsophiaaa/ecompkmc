@@ -1,6 +1,36 @@
 {%extends 'core/base.html'%}
 
 {% block content %}
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="sidebar">
+          <ul class="menu flex-column">
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'account:profile' user.id%}">Profile</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'core:product_list' %}">Products</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="#">Orders</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="#">Customers</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'account:switch_role'%}">Switch Role</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'core:logout' %}">Logout</a>
+            </li>
+          </ul>
+        </div>
+    </div>
+  </div>
 <div class="container">
     <h2>Products List</h2>
     <button class="button-create" style="background-color: #1b1631;color: #fff;padding: 10px 20px;border: none;border-radius: 5px;cursor: pointer;text-align: center;float: right;margin-top: -40px;"  ><a  style="color: #fff;text-decoration: none" href="{% url 'product:add_product' %}">Create Product</button></a>

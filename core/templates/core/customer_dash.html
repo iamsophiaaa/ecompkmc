@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-
+   
     <!-- Header-->
     <header class="bg-dark py-5">
         <div class="container px-2 px-lg-2 my-1">
@@ -17,7 +17,7 @@
         
 
         <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" style="max-width: 100%;background-color:rgb(229, 228, 228);padding: 10px; margin: 0 auto; ">
-            <h2 style="text-align:center;">Recommendations</h2>
+            <h3 style="text-align:center;">Recommendations for you , {{user.username}}</h3>
             <div class="carousel-inner" style=" display: flex; justify-content: center; align-items: center;background-color:rgb(229, 228, 228); ">
                 {% for product in products_from_same_department %}
                 <div class="carousel-item active" data-bs-interval="5000" style="align-items: center;background-color:rgb(229, 228, 228);" >

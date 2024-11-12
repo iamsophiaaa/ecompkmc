@@ -1,7 +1,38 @@
 {% include 'core/nav_seller.html' %}
 {% extends 'core/base.html' %}
 {%  block content %}
+
 <h1>Delete Product</h1>
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="sidebar">
+          <ul class="menu flex-column">
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'account:profile' user.id%}">Profile</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'core:product_list' %}">Products</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="#">Orders</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="#">Customers</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'account:switch_role'%}">Switch Role</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'core:logout' %}">Logout</a>
+            </li>
+          </ul>
+        </div>
+    </div>
+  </div>
 <p>Are you sure you want to delete "{{ product.name }}"?</p>
 <form method="POST" action="{% url 'product:delete_product' product.id %}">
     {% csrf_token %}

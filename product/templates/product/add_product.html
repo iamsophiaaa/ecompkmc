@@ -3,6 +3,37 @@
 
 {{ form.media }}
 {% block content %}
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="sidebar">
+          <ul class="menu flex-column">
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'account:profile' user.id%}">Profile</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'core:product_list' %}">Products</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="#">Orders</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="#">Customers</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'account:switch_role'%}">Switch Role</a>
+            </li>
+            <li class="menu-item">
+              <a class="menu-link" href="{% url 'core:logout' %}">Logout</a>
+            </li>
+          </ul>
+        </div>
+    </div>
+  </div>
 <section>
     <form method = "POST" enctype="multipart/form-data" style="font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 20px;">
         {% csrf_token %}
