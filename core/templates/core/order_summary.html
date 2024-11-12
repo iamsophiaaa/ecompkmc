@@ -1,0 +1,8 @@
+<h2>Order Summary</h2>
+<p>Order #{{ order.id }}</p>
+<p>Status: {{ order.status }}</p>
+<ul>
+    {% for item in order.items.all %}
+        <li>{{ item.quantity }} x {{ item.product.name }}</li>
+    {% endfor %}
+</ul>

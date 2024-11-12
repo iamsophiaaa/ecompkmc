@@ -38,6 +38,7 @@
                                     <button type="submit" class="btn btn-primary mt-2">Update Quantity</button>
                                     <button type="submit" name="delete" class="btn btn-danger mt-2">Delete</button>
                                 </form>
+                                
                            
                             
                         </div>
@@ -47,9 +48,21 @@
         {% endfor %}
         <p><strong>Total Quantity:</strong> {{ total_quantity }}</p>
         <p><strong>Total Price:</strong> {{ total_price|floatformat:2 }}</p>
-    {% else %}
-        <p>There is nothing in your cart.</p>
-    {% endif %}
+
+
+
+
+
+    <form action="{% url 'place_order' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
+
+
 </div>
 
 {% endblock %}

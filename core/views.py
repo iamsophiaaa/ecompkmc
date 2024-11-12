@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect
-from .models import Product,Category
+from .models import Product,Category,  Order
+
 from django.contrib.auth import authenticate , login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from account.models  import SellerProfile, CustomerProfile
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from cart.models import Cart, CartItem 
+
 # from django import forms
 # from .forms import SignUpForm
 import os
@@ -37,29 +42,9 @@ def about(request):
         
 
 
-# def register_user(request):
-#     form = SignUpForm()
-#     if request.method == "POST":
-#         form = SignUpForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password1']
-#             user = authenticate(username=username, password=password)
-#             login(request, user)
-#             messages.success(request, ("You've registered successfully"))
-#             return redirect('login')
-#         else:
-#             messages.error(request, "oops there was problem in registering , please try again!!!")
-#             return redirect('register')
-#     else:
-#         return render(request, 'register_user.html', {'form':form})
 
 
 
-
-
-    
 
 
 
@@ -73,12 +58,6 @@ def register_user(request):
     return render(request, 'account/register_user.html', {})
 
 
-# def search(request):
-#     if request.method == "POST":
-#         searched = request.POST['searched']
-#         return render(request,"search.html", {'searched':searched} )
-#     else:
-#         return render(request, "product/search.html", {})
 
 
 def customer_dashboard(request):
@@ -117,17 +96,21 @@ def seller_dashboard(request):
     # If the seller profile exists, filter the products by the seller's profile
     if seller_profile:
         products = Product.objects.filter(seller=seller_profile)
+        orders = Order.objects.filter(items__product__in=products).distinct()
     else:
         products = Product.objects.none()
     
     
-    return render(request, 'core/seller_dash.html', {'products': products})
+    return render(request, 'core/seller_dash.html', {'products': products, 'orders': orders})
 
 
-def product_list(request):
-    user = request.user
-    seller_profile = SellerProfile.objects.get(user=user)
-    products = Product.objects.filter(seller=seller_profile)
+
+# def product_list(request):
+#     user = request.user
+#     seller_profile = SellerProfile.objects.get(user=user)
+#     products = Product.objects.filter(seller=seller_profile)
     
 
-    return render(request, 'core/product_list.html', {'products': products})
+#     return render(request, 'core/product_list.html', {'products': products})
+
+

@@ -1,8 +1,9 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .cart import Cart
-from core.models import Product
+from core.models import Product,Order
 from django.http import JsonResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 def cart_summary(request):
     cart_products = []
     cart = request.session.get('cart', {})
@@ -87,3 +88,29 @@ def add_to_cart(request):
         
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+@login_required
+def place_order(request):
+    # Get the user's cart
+    cart, created = Cart.objects.get_or_create(user=request.user)
+
+    # If the cart has items, create an order
+    if cart.items.exists():
+        # Create the order
+        order = Order.objects.create(user=request.user, cart=cart)
+
+        # Optionally, you can move the cart items to an OrderItem model if needed
+
+        # Clear the cart after placing the order
+        cart.items.all().delete()  # Remove all cart items
+        cart.delete()  # Optionally delete the cart itself
+
+        # Display success message using Django messages framework
+        messages.success(request, 'Your order has been placed successfully!')
+
+        return redirect('home')  # Redirect to the home page or anywhere else you'd like
+    else:
+        # If there are no items in the cart, redirect to the cart page
+        messages.error(request, 'Your cart is empty. Please add items to the cart before placing an order.')
+        return redirect('cart_summary')
