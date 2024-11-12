@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect
 from .models import Product,Category
+
 from django.contrib.auth import authenticate , login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from account.models  import SellerProfile, CustomerProfile
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from cart.models import Cart, CartItem 
+
 # from django import forms
 # from .forms import SignUpForm
 import os
@@ -75,12 +80,9 @@ def login_user(request):
     
     else:
         return render(request, 'login.html', {})
-        
-        
-
-
-
     
+
+
 
 
 
@@ -126,29 +128,37 @@ def customer_dashboard(request):
         products_from_same_department = Product.objects.none()
     
     return render(request, 'core/customer_dash.html', {'products': products, 'products_from_same_department': products_from_same_department})
+# def seller_dashboard(request):
+#     user = request.user
+    
+#     # Get the SellerProfile related to the logged-in user
+#     try:
+#         seller_profile = SellerProfile.objects.get(user=user)
+#     except SellerProfile.DoesNotExist:
+#         seller_profile = None  # Or handle this case if the user is not a seller
+
+#     # If the seller profile exists, filter the products by the seller's profile
+#     if seller_profile:
+#         products = Product.objects.filter(seller=seller_profile)
+#     else:
+#         products = Product.objects.none()
+    
+    
+#     return render(request, 'core/seller_dash.html', {'products': products})
 def seller_dashboard(request):
-    user = request.user
-    
-    # Get the SellerProfile related to the logged-in user
-    try:
-        seller_profile = SellerProfile.objects.get(user=user)
-    except SellerProfile.DoesNotExist:
-        seller_profile = None  # Or handle this case if the user is not a seller
-
-    # If the seller profile exists, filter the products by the seller's profile
-    if seller_profile:
-        products = Product.objects.filter(seller=seller_profile)
-    else:
-        products = Product.objects.none()
-    
-    
-    return render(request, 'core/seller_dash.html', {'products': products})
+    if request.user.userprofile.user_type != 'seller':
+        return redirect('home')
+    products = Product.objects.filter(seller=request.user)
+    orders = Order.objects.filter(items__product__in=products).distinct()
+    return render(request, 'core/seller_dash.html', {'orders': orders})
 
 
-def product_list(request):
-    user = request.user
-    seller_profile = SellerProfile.objects.get(user=user)
-    products = Product.objects.filter(seller=seller_profile)
+# def product_list(request):
+#     user = request.user
+#     seller_profile = SellerProfile.objects.get(user=user)
+#     products = Product.objects.filter(seller=seller_profile)
     
 
-    return render(request, 'core/product_list.html', {'products': products})
+#     return render(request, 'core/product_list.html', {'products': products})
+
+

@@ -76,11 +76,21 @@
 
     <section>
         <h2 style="text-align:center;">Your Orders</h2>
-        <ul>
+        <!-- <ul>
             {% for order in orders %}
                 <li>Order for {{ order.product.name }} - Status: {{ order.status }} - Total: ${{ order.total_price }}</li>
             {% endfor %}
-        </ul>
+        </ul> -->
+        <h2>Seller Dashboard</h2>
+{% for order in orders %}
+    <h3>Order #{{ order.id }} by {{ order.customer.username }} - Status: {{ order.status }}</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.quantity }} x {{ item.product.name }}</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+
     </section>
 
 
