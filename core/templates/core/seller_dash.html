@@ -1,6 +1,8 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
+
+
 <h1>{{user.username}}'s dashboard</h1>
 
 
@@ -15,10 +17,10 @@
     <div class="sidebar">
         <ul class="menu flex-column">
           <li class="menu-item">
-            <a class="menu-link" href="#">Profile</a>
+            <a class="menu-link" href="{% url 'account:profile' user.id%}">Profile</a>
           </li>
           <li class="menu-item">
-            <a class="menu-link" href="{% url 'product_list' %}">Products</a>
+            <a class="menu-link" href="{% url 'core:product_list' %}">Products</a>
           </li>
           <li class="menu-item">
             <a class="menu-link" href="#">Orders</a>
@@ -62,7 +64,7 @@
                       </div>
                       <!-- Product actions-->
                       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                          <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %} ">View Product</a></div>
+                          <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'core:product' product.id %} ">View Product</a></div>
                       </div>
                   </div>
               </div>

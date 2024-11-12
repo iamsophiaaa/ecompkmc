@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% include 'core/nav_seller.html' %}
+{% block content%}
+<h1>Edit Product</h1>
+<section style="margin: 20px 20px">
+    <form method="POST" enctype="multipart/form-data" action="{% url 'product:edit_product' product.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        {% if product.image %}
+        <div>
+            <h3>Current Image:</h3>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="150">
+        </div>
+        {% endif %}
+
+        <div style="margin:10px auto">
+            <button type="submit">Save Changes</button>
+            <a href="{% url 'core:product_list' %}"><button type="submit">Cancel</button></a>
+        </div>
+        
+    </form>
+
+</section>
+
+
+
+{% endblock %}

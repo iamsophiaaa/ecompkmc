@@ -1,24 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>All Products</title>
-</head>
-<body>
-    <h1>All Products</h1>
+{%extends 'core/base.html'%}
+
+{% block content %}
+<div class="container">
+    <h2>Products List</h2>
+    <button class="button-create" style="background-color: #1b1631;color: #fff;padding: 10px 20px;border: none;border-radius: 5px;cursor: pointer;text-align: center;float: right;margin-top: -40px;"  ><a  style="color: #fff;text-decoration: none" href="{% url 'product:add_product' %}">Create Product</button></a>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    
+                    <th>Product Image</th>
+                    <th>Product Title</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">
+                    
+                    <td><img src="{{product.image.url}}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 15px; "></td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.condition}}</td>
+                    <td>{{product.number}}</td>
+                    <td class="actions">
+                        <a href="{% url 'product:edit_product' product.id %}"><button class="edit" style="  padding: 6px 12px; border: none;border-radius: 4px;cursor: pointer;font-size: 14px;margin-right: 5px; background-color: #28a745;color: white;">Edit</button></a>
+                        <a href="{% url 'product:delete_product' product.id %}"><button class="delete" style="   padding: 6px 12px;border: none;border-radius: 4px;cursor: pointer;font-size: 14px; margin-right: 5px;background-color: #dc3545;color: white;">Delete</button></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                <!-- Additional rows can go here -->
+            </tbody>
+        </table>
+    </div>
+
     
-        {% for product in products %}
-           <center>
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:150px;height:auto;">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
-                <p>{{ product.name }} </p>
-                <p>${{ product.price }}</p>
-                <p>{{product.description}}</p>
-           </center>
-        {% endfor %}
-    
-</body>
-</html>
+    </section>
+
+        {% endblock %}

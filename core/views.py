@@ -70,16 +70,25 @@ def login_user(request):
             login(request, user)
             messages.success(request, ("You've been logged in successfully"))
             if user=='customer':
-                return redirect('customer_dashboard')
+                return redirect('core:customer_dashboard')
             
             elif user=='seller':
-                return redirect('seller_dashboard')
+                return redirect('core:seller_dashboard')
         else:
             messages.success(request, ("There was an error"))
-            return redirect('login')
+            return redirect('account:login')
     
     else:
+<<<<<<< HEAD
         return render(request, 'login.html', {})
+=======
+        return render(request, 'account/login.html', {})
+        
+        
+
+
+
+>>>>>>> f130a16d69a92de43c13fa47d0bd2a4cf2caa1d6
     
 
 
@@ -89,11 +98,11 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.success(request, ("You've been logged out."))
-    return redirect('home')
+    return redirect('core:home')
 
 def register_user(request):
    
-    return render(request, 'register_user.html', {})
+    return render(request, 'account/register_user.html', {})
 
 
 # def search(request):

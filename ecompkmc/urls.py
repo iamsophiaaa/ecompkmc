@@ -26,7 +26,10 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('product/', include(('product.urls', 'product'), namespace='product')),
     
+<<<<<<< HEAD
 
+=======
+>>>>>>> f130a16d69a92de43c13fa47d0bd2a4cf2caa1d6
 
 
    
